@@ -1,6 +1,7 @@
 <script setup>
     import { onMounted, ref } from 'vue';
     import axios from 'axios';
+    import router from '../../router';
 
     let form = ref([])
     let allCustomers = ref([])
@@ -67,8 +68,35 @@
     }
 
     const Total = () => {
-        return subTotal() - (form.value.discount/100)
+        return subTotal() - form.value.discount
     }
+
+    const onSave = () => {
+        if (listCart.value.length >= 1) {
+            let subtotal = 0
+            subtotal = subTotal()
+
+            let total = 0
+            total = Total()
+
+            const formData = new FormData()
+            formData.append('invoice_item', JSON.stringify(listCart.value))
+            formData.append('customer_id', customer_id.value)
+            formData.append('date', form.value.date)
+            formData.append('due_date', form.value.due_date)
+            formData.append('number', form.value.number)
+            formData.append('reference', form.value.reference)
+            formData.append('discount', form.value.discount)
+            formData.append('subtotal', subtotal)
+            formData.append('total', total)
+            formData.append('terms_and_conditions', form.value.terms_and_conditions)
+
+            axios.post("/api/add", formData)
+            listCart.value = []
+            router.push('/')
+        }
+    }
+
 </script>
 
 <template>
@@ -152,7 +180,7 @@
                         <span>$ {{ subTotal() }}</span>
                     </div>
                     <div class="table__footer--discount">
-                        <p>Discount (%)</p>
+                        <p>Discount</p>
                         <input type="text" class="input" v-model="form.discount">
                     </div>
                     <div class="table__footer--total">
@@ -169,7 +197,7 @@
                 
             </div>
             <div>
-                <a class="btn btn-secondary">
+                <a class="btn btn-secondary" @click="onSave()">
                     Save
                 </a>
             </div>

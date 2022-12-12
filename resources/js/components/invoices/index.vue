@@ -25,6 +25,10 @@
     let form = await axios.get("/api/create")
     router.push('/invoice/new')
   }
+
+  const onShow = (id) => {
+    router.push('/invoice/show/'+id)
+  }
 </script>
 
 
@@ -86,7 +90,7 @@
 
           <!-- item 1 -->
           <div class="table--items"  v-for="item in invoices" :key="item.id" v-if="invoices.length != 0">
-              <a href="#" class="table--items--transactionId">#{{ item.id }}</a>
+              <a href="#" @click="onShow(item.id)">#{{ item.id }}</a>
               <p>{{ item.date }}</p>
               <p>#{{ item.number }}</p>
               <p v-if="item.customer">
