@@ -18,9 +18,18 @@
     
     const getInvoice = async () => {
         let response = await axios.get(`/api/show/${props.id}`)
-        console.log('form', response.data.invoice)
+        // console.log('form', response.data.invoice)
         form.value = response.data.invoice
 
+    }
+
+    const print = () => {
+        window.print()
+        router.push('/').catch(() => {})
+    }
+
+    const onEdit = (id) => {
+        router.push('/invoice/edit/'+id)
     }
 </script>
 
@@ -46,7 +55,7 @@
                 <ul  class="card__header-list">
                     <li>
                         <!-- Select Btn Option -->
-                        <button class="selectBtnFlat">
+                        <button class="selectBtnFlat" @click="print()">
                             <i class="fas fa-print"></i>
                             Print
                         </button>
@@ -54,7 +63,7 @@
                     </li>
                     <li>
                         <!-- Select Btn Option -->
-                        <button class="selectBtnFlat">
+                        <button class="selectBtnFlat" @click="onEdit(form.id)">
                             <i class=" fas fa-reply"></i>
                             Edit
                         </button>

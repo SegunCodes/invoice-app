@@ -27,3 +27,5 @@ Route::get('/customers', [CustomerController::class, 'allCustomers']);
 Route::get('/products', [ProductController::class, 'allProducts']);
 Route::post('/add', [InvoiceController::class, 'addInvoice']);
 Route::get('/show/{id}', [InvoiceController::class, 'showInvoice']);
+Route::get('/delete-item/{id}', [InvoiceController::class, 'deleteItem']);
+Route::post('/update/{id}', [InvoiceController::class, 'updateInvoice']);
